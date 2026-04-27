@@ -1,0 +1,74 @@
+<div>
+    <div class="card">
+        <div class="card-header">
+            <h3>🌐 إدارة المواقع الإلكترونية</h3>
+            <div>
+                <button class="btn btn-primary btn-sm" onclick="refreshWebsites()">تحديث</button>
+            </div>
+        </div>
+        <div style="overflow-x: auto; padding: 20px;">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th><th>النطاق الفرعي</th><th>المالك</th><th>النطاق المخصص</th><th>الحالة</th><th>تاريخ الإنشاء</th><th>تاريخ الانتهاء</th><th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (websites && websites.length > 0) { %>
+                        <% websites.forEach(site => { %>
+                            <tr>
+                                <td><%= site.site_id %></td>
+                                <td><%= site.subdomain %></td>
+                                <td><%= site.user?.email || '-' %></td>
+                                <td><%= site.custom_domain || '-' %></td>
+                                <td><span class="badge <%= site.status === 'active' ? 'badge-success' : (site.status === 'trial' ? 'badge-warning' : 'badge-danger') %>">
+                                    <%= site.status === 'active' ? 'نشط' : (site.status === 'trial' ? 'تجريبي' : 'معطل') %>
+                                </span></td>
+                                <td><%= new Date(site.created_at).toLocaleDateString('ar') %></td>
+                                <td><%= site.trial_end_date ? new Date(site.trial_end_date).toLocaleDateString('ar') : '-' %></td>
+                                <td>
+                                    <button class="btn btn-info btn-sm" onclick="viewSite(<%= site.site_id %>)">عرض</button>
+                                    <button class="btn btn-warning btn-sm" onclick="toggleSite(<%= site.site_id %>, '<%= site.status %>')">
+                                        <%= site.status === 'active' ? 'تعطيل' : 'تفعيل' %>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" onclick="deleteSite(<%= site.site_id %>)">حذف</button>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    <% } else { %>
+                        <tr><td colspan="8" style="text-align: center;">لا توجد مواقع</td></tr>
+                    <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function viewSite(siteId) {
+        const site = await apiFetch(`/api/admin/websites/${siteId}`);
+        alert(`النطاق: ${site.subdomain}\nالمالك: ${site.user_email}\nالحالة: ${site.status}\nالرابط: ${site.url}`);
+    }
+    
+    async function toggleSite(siteId, currentStatus) {
+        const newStatus = currentStatus === 'active' ? 'disabled' : 'active';
+        if (confirm(`هل أنت متأكد من ${newStatus === 'active' ? 'تفعيل' : 'تعطيل'} هذا الموقع؟`)) {
+            await apiFetch(`/api/admin/websites/${siteId}/toggle`, {
+                method: 'POST',
+                body: JSON.stringify({ status: newStatus })
+            });
+            location.reload();
+        }
+    }
+    
+    async function deleteSite(siteId) {
+        if (confirm('هل أنت متأكد من حذف هذا الموقع؟')) {
+            await apiFetch(`/api/admin/websites/${siteId}`, { method: 'DELETE' });
+            location.reload();
+        }
+    }
+    
+    async function refreshWebsites() {
+        location.reload();
+    }
+</script>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سياسة الخصوصية - آفاق اليمن</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; color: #333; }
+        
+        .header { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .header-content { max-width: 1200px; margin: 0 auto; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .logo h1 { font-size: 1.5rem; color: #007bff; }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 500; }
+        .nav-links a:hover { color: #007bff; }
+        
+        .hero { background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); color: white; padding: 60px 20px; text-align: center; }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 20px; }
+        
+        .content { max-width: 800px; margin: 0 auto; padding: 60px 20px; }
+        .content h2 { color: #007bff; margin: 30px 0 15px; }
+        .content h3 { margin: 20px 0 10px; }
+        .content p { margin-bottom: 15px; }
+        .content ul { margin-bottom: 15px; padding-right: 30px; }
+        .content li { margin-bottom: 8px; }
+        .last-updated { color: #666; font-size: 0.9rem; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+        
+        .footer { background: #1a2a3a; color: white; padding: 40px 20px 20px; text-align: center; }
+        .footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
+        .footer-links a { color: white; text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; gap: 15px; }
+            .hero h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo"><h1>آفاق اليمن</h1></div>
+            <nav class="nav-links">
+                <a href="/">الرئيسية</a>
+                <a href="/services">خدماتنا</a>
+                <a href="/pricing">الأسعار</a>
+                <a href="/help-center">مركز المساعدة</a>
+                <a href="/contact">اتصل بنا</a>
+                <% if (user) { %>
+                    <a href="/admin">لوحة التحكم</a>
+                    <a href="/logout">تسجيل الخروج</a>
+                <% } else { %>
+                    <a href="/login">دخول</a>
+                <% } %>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>سياسة الخصوصية</h1>
+        <p>نحن نحمي خصوصية بياناتك</p>
+    </section>
+
+    <div class="content">
+        <div class="last-updated">آخر تحديث: 1 يناير 2024</div>
+        
+        <p>نحن في آفاق اليمن ندرك أهمية خصوصية بياناتك. تصف هذه السياسة كيفية جمع واستخدام وحماية معلوماتك عند استخدام منصتنا.</p>
+        
+        <h2>1. المعلومات التي نجمعها</h2>
+        <p>نجمع المعلومات التالية:</p>
+        <ul>
+            <li><strong>معلومات الحساب:</strong> البريد الإلكتروني، اسم المؤسسة، رقم الهاتف، الشعار، وصف المؤسسة، نوع النشاط.</li>
+            <li><strong>معلومات البوتات:</strong> أسماء البوتات، إعداداتها، جلسات واتساب (مشفرة).</li>
+            <li><strong>معلومات الدفع:</strong> أرقام الحوالات المالية، أسماء المرسلين (لأغراض التحقق فقط).</li>
+            <li><strong>معلومات الاستخدام:</strong> عدد الرسائل، عدد البوتات، عدد المواقع.</li>
+        </ul>
+        
+        <h2>2. كيف نستخدم معلوماتك</h2>
+        <ul>
+            <li>تقديم وتحسين خدماتنا.</li>
+            <li>معالجة طلبات الدفع والاشتراكات.</li>
+            <li>إرسال إشعارات مهمة حول حسابك.</li>
+            <li>تحسين تجربة المستخدم.</li>
+            <li>الامتثال للالتزامات القانونية.</li>
+        </ul>
+        
+        <h2>3. حماية بياناتك</h2>
+        <p>نتخذ إجراءات أمنية متقدمة لحماية بياناتك:</p>
+        <ul>
+            <li><strong>تشفير AES-256:</strong> لجميع البيانات الحساسة (جلسات واتساب، توكنات البوتات، مفاتيح API).</li>
+            <li><strong>تشفير bcrypt:</strong> لكلمات السر.</li>
+            <li><strong>HTTPS:</strong> لجميع الاتصالات.</li>
+            <li><strong>نسخ احتياطية مشفرة:</strong> يومياً.</li>
+        </ul>
+        
+        <h2>4. مشاركة البيانات</h2>
+        <p>لا نشارك بياناتك مع أي طرف ثالث، إلا في الحالات التالية:</p>
+        <ul>
+            <li>بموجب القانون أو أمر قضائي.</li>
+            <li>لحماية حقوقنا أو ممتلكاتنا أو سلامة مستخدمينا.</li>
+            <li>بموافقتك الصريحة.</li>
+        </ul>
+        
+        <h2>5. حقوقك</h2>
+        <p>لديك الحقوق التالية فيما يتعلق ببياناتك:</p>
+        <ul>
+            <li>الوصول إلى بياناتك وتصحيحها.</li>
+            <li>حذف حسابك وبياناتك بالكامل.</li>
+            <li>تصدير بياناتك (عند الطلب).</li>
+            <li>إلغاء الاشتراك في الإشعارات التسويقية.</li>
+        </ul>
+        
+        <h2>6. تخزين البيانات</h2>
+        <p>نخزن بياناتك على خوادم آمنة. نحتفظ ببياناتك طالما كان حسابك نشطاً أو حسب الحاجة لتقديم الخدمات. عند حذف حسابك، يتم حذف جميع بياناتك نهائياً.</p>
+        
+        <h2>7. استخدام الكوكيز (Cookies)</h2>
+        <p>نستخدم الكوكيز لتحسين تجربتك على موقعنا. يمكنك تعطيل الكوكيز من إعدادات متصفحك، لكن قد يؤثر ذلك على بعض وظائف الموقع.</p>
+        
+        <h2>8. خصوصية الأطفال</h2>
+        <p>خدماتنا موجهة للشركات والمؤسسات، ولا نستهدف الأطفال تحت سن 18 عاماً. إذا اكتشفنا أننا جمعنا معلومات من طفل دون موافقة الوالدين، سنحذفها فوراً.</p>
+        
+        <h2>9. التغييرات على سياسة الخصوصية</h2>
+        <p>قد نقوم بتحديث سياسة الخصوصية من وقت لآخر. سنخطرك بأي تغييرات جوهرية عبر البريد الإلكتروني أو من خلال منصتنا.</p>
+        
+        <h2>10. اتصل بنا</h2>
+        <p>إذا كانت لديك أي أسئلة حول سياسة الخصوصية، يرجى الاتصال بنا:</p>
+        <ul>
+            <li>البريد الإلكتروني: <a href="mailto:privacy@afaqyemen.com">privacy@afaqyemen.com</a></li>
+            <li>عبر البوت الرئيسي على تيليجرام</li>
+            <li>من خلال نموذج الاتصال في موقعنا</li>
+        </ul>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="/privacy">سياسة الخصوصية</a>
+            <a href="/terms">شروط الاستخدام</a>
+            <a href="/contact">اتصل بنا</a>
+        </div>
+        <p>&copy; 2024 آفاق اليمن. جميع الحقوق محفوظة</p>
+    </footer>
+</body>
+</html>
