@@ -1,0 +1,73 @@
+<!-- القسم المشترك: الشريط الجانبي للوحة التحكم -->
+<aside class="admin-sidebar">
+    <div class="admin-sidebar-header">
+        <h2>آفاق اليمن</h2>
+        <p>لوحة التحكم</p>
+    </div>
+    <nav class="admin-menu">
+        <a href="/admin" class="admin-menu-link <%= currentPage === 'dashboard' ? 'active' : '' %>">
+            <i>📊</i> <span>لوحة المعلومات</span>
+        </a>
+        <a href="/admin/users" class="admin-menu-link <%= currentPage === 'users' ? 'active' : '' %>">
+            <i>👥</i> <span>المستخدمون</span>
+        </a>
+        <a href="/admin/payments" class="admin-menu-link <%= currentPage === 'payments' ? 'active' : '' %>">
+            <i>💰</i> <span>الاشتراكات والمدفوعات</span>
+        </a>
+        <a href="/admin/bots" class="admin-menu-link <%= currentPage === 'bots' ? 'active' : '' %>">
+            <i>🤖</i> <span>البوتات</span>
+        </a>
+        <a href="/admin/websites" class="admin-menu-link <%= currentPage === 'websites' ? 'active' : '' %>">
+            <i>🌐</i> <span>المواقع</span>
+        </a>
+        <a href="/admin/support" class="admin-menu-link <%= currentPage === 'support' ? 'active' : '' %>">
+            <i>📞</i> <span>تذاكر الدعم</span>
+        </a>
+        <a href="/admin/content" class="admin-menu-link <%= currentPage === 'content' ? 'active' : '' %>">
+            <i>📝</i> <span>إدارة المحتوى</span>
+        </a>
+        <a href="/admin/settings" class="admin-menu-link <%= currentPage === 'settings' ? 'active' : '' %>">
+            <i>⚙️</i> <span>الإعدادات</span>
+        </a>
+        <a href="/admin/logs" class="admin-menu-link <%= currentPage === 'logs' ? 'active' : '' %>">
+            <i>📜</i> <span>سجل الحركات</span>
+        </a>
+        <div style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);"></div>
+        <a href="/" class="admin-menu-link">
+            <i>🏠</i> <span>الموقع الرئيسي</span>
+        </a>
+        <a href="/logout" class="admin-menu-link">
+            <i>🚪</i> <span>تسجيل الخروج</span>
+        </a>
+    </nav>
+</aside>
+
+<style>
+    .admin-sidebar {
+        width: 280px;
+        background: linear-gradient(135deg, #1a2a3a 0%, #0d1a24 100%);
+        color: white;
+        position: fixed;
+        height: 100vh;
+        overflow-y: auto;
+        transition: transform 0.3s ease;
+        z-index: 1000;
+    }
+    .admin-sidebar-header { padding: 25px 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .admin-menu { list-style: none; padding: 20px 0; }
+    .admin-menu-link { display: flex; align-items: center; padding: 12px 20px; color: rgba(255,255,255,0.8); text-decoration: none; transition: all 0.3s; }
+    .admin-menu-link i { width: 24px; margin-left: 15px; }
+    .admin-menu-link:hover, .admin-menu-link.active { background-color: rgba(255,255,255,0.1); color: white; }
+    
+    @media (max-width: 768px) {
+        .admin-sidebar { transform: translateX(100%); }
+        .admin-sidebar.open { transform: translateX(0); }
+    }
+</style>
+
+<script>
+    // للاستخدام مع زر القائمة في الشاشات الصغيرة
+    function toggleAdminSidebar() {
+        document.querySelector('.admin-sidebar').classList.toggle('open');
+    }
+</script>

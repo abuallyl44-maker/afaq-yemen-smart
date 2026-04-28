@@ -1,0 +1,203 @@
+<div>
+    <div class="card">
+        <div class="card-header">
+            <h3>📝 إدارة المحتوى</h3>
+        </div>
+        <div style="padding: 20px;">
+            
+            <!-- الأسئلة الشائعة (FAQ) -->
+            <div style="margin-bottom: 40px;">
+                <h4>📖 الأسئلة الشائعة (FAQ)</h4>
+                <button class="btn btn-primary btn-sm" onclick="showAddFaqModal()" style="margin: 10px 0;">➕ إضافة سؤال جديد</button>
+                <div style="overflow-x: auto;">
+                    <table class="table">
+                        <thead>
+                            <tr><th>السؤال</th><th>الإجابة</th><th>الإجراءات</th></tr>
+                        </thead>
+                        <tbody id="faqTable">
+                            <% if (faqs && faqs.length > 0) { %>
+                                <% faqs.forEach(faq => { %>
+                                    <tr>
+                                        <td><%= faq.question %></td>
+                                        <td><%= faq.answer.substring(0, 100) %>...</td>
+                                        <td>
+                                            <button class="btn btn-warning btn-sm" onclick="editFaq(<%= faq.id %>)">تعديل</button>
+                                            <button class="btn btn-danger btn-sm" onclick="deleteFaq(<%= faq.id %>)">حذف</button>
+                                         </td>
+                                     </tr>
+                                <% }) %>
+                            <% } else { %>
+                                <tr><td colspan="3" style="text-align: center;">لا توجد أسئلة</td></tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- الفيديوهات -->
+            <div style="margin-bottom: 40px;">
+                <h4>🎬 الفيديوهات التعليمية</h4>
+                <button class="btn btn-primary btn-sm" onclick="showAddVideoModal()" style="margin: 10px 0;">➕ إضافة فيديو جديد</button>
+                <div style="overflow-x: auto;">
+                    <table class="table">
+                        <thead>
+                            <tr><th>العنوان</th><th>الرابط</th><th>القسم</th><th>الإجراءات</th></tr>
+                        </thead>
+                        <tbody id="videosTable">
+                            <% if (videos && videos.length > 0) { %>
+                                <% videos.forEach(video => { %>
+                                    <tr>
+                                        <td><%= video.title %></td>
+                                        <td><%= video.url %></td>
+                                        <td><%= video.category %></td>
+                                        <td>
+                                            <button class="btn btn-warning btn-sm" onclick="editVideo(<%= video.id %>)">تعديل</button>
+                                            <button class="btn btn-danger btn-sm" onclick="deleteVideo(<%= video.id %>)">حذف</button>
+                                         </td>
+                                     </tr>
+                                <% }) %>
+                            <% } else { %>
+                                <tr><td colspan="4" style="text-align: center;">لا توجد فيديوهات</td></tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- المقالات -->
+            <div>
+                <h4>📄 المقالات التعليمية</h4>
+                <button class="btn btn-primary btn-sm" onclick="showAddArticleModal()" style="margin: 10px 0;">➕ إضافة مقال جديد</button>
+                <div style="overflow-x: auto;">
+                    <table class="table">
+                        <thead>
+                            <tr><th>العنوان</th><th>القسم</th><th>تاريخ النشر</th><th>الإجراءات</th></tr>
+                        </thead>
+                        <tbody id="articlesTable">
+                            <% if (articles && articles.length > 0) { %>
+                                <% articles.forEach(article => { %>
+                                    <tr>
+                                        <td><%= article.title %></td>
+                                        <td><%= article.category %></td>
+                                        <td><%= new Date(article.created_at).toLocaleDateString('ar') %></td>
+                                        <td>
+                                            <button class="btn btn-info btn-sm" onclick="viewArticle(<%= article.id %>)">عرض</button>
+                                            <button class="btn btn-warning btn-sm" onclick="editArticle(<%= article.id %>)">تعديل</button>
+                                            <button class="btn btn-danger btn-sm" onclick="deleteArticle(<%= article.id %>)">حذف</button>
+                                         </td>
+                                     </tr>
+                                <% }) %>
+                            <% } else { %>
+                                <tr><td colspan="4" style="text-align: center;">لا توجد مقالات</td></tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // FAQ Functions
+    function showAddFaqModal() {
+        const question = prompt('أدخل السؤال:');
+        if (!question) return;
+        const answer = prompt('أدخل الإجابة:');
+        if (!answer) return;
+        
+        apiFetch('/api/admin/content/faq', {
+            method: 'POST',
+            body: JSON.stringify({ question, answer })
+        }).then(() => location.reload());
+    }
+    
+    function editFaq(id) {
+        const question = prompt('تعديل السؤال:');
+        if (!question) return;
+        const answer = prompt('تعديل الإجابة:');
+        if (!answer) return;
+        
+        apiFetch(`/api/admin/content/faq/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify({ question, answer })
+        }).then(() => location.reload());
+    }
+    
+    function deleteFaq(id) {
+        if (confirm('هل أنت متأكد من حذف هذا السؤال؟')) {
+            apiFetch(`/api/admin/content/faq/${id}`, { method: 'DELETE' })
+                .then(() => location.reload());
+        }
+    }
+    
+    // Video Functions
+    function showAddVideoModal() {
+        const title = prompt('أدخل عنوان الفيديو:');
+        if (!title) return;
+        const url = prompt('أدخل رابط الفيديو (YouTube):');
+        if (!url) return;
+        const category = prompt('أدخل القسم (مثال: إنشاء البوتات):');
+        
+        apiFetch('/api/admin/content/videos', {
+            method: 'POST',
+            body: JSON.stringify({ title, url, category })
+        }).then(() => location.reload());
+    }
+    
+    function editVideo(id) {
+        const title = prompt('تعديل عنوان الفيديو:');
+        if (!title) return;
+        const url = prompt('تعديل رابط الفيديو:');
+        if (!url) return;
+        
+        apiFetch(`/api/admin/content/videos/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify({ title, url })
+        }).then(() => location.reload());
+    }
+    
+    function deleteVideo(id) {
+        if (confirm('هل أنت متأكد من حذف هذا الفيديو؟')) {
+            apiFetch(`/api/admin/content/videos/${id}`, { method: 'DELETE' })
+                .then(() => location.reload());
+        }
+    }
+    
+    // Article Functions
+    function showAddArticleModal() {
+        const title = prompt('أدخل عنوان المقال:');
+        if (!title) return;
+        const content = prompt('أدخل محتوى المقال:');
+        if (!content) return;
+        const category = prompt('أدخل القسم:');
+        
+        apiFetch('/api/admin/content/articles', {
+            method: 'POST',
+            body: JSON.stringify({ title, content, category })
+        }).then(() => location.reload());
+    }
+    
+    function viewArticle(id) {
+        window.open(`/blog/${id}`, '_blank');
+    }
+    
+    function editArticle(id) {
+        const title = prompt('تعديل عنوان المقال:');
+        if (!title) return;
+        const content = prompt('تعديل محتوى المقال:');
+        if (!content) return;
+        
+        apiFetch(`/api/admin/content/articles/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify({ title, content })
+        }).then(() => location.reload());
+    }
+    
+    function deleteArticle(id) {
+        if (confirm('هل أنت متأكد من حذف هذا المقال؟')) {
+            apiFetch(`/api/admin/content/articles/${id}`, { method: 'DELETE' })
+                .then(() => location.reload());
+        }
+    }
+</script>

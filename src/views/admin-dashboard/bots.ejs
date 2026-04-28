@@ -1,0 +1,122 @@
+<div>
+    <div class="card">
+        <div class="card-header">
+            <h3>🤖 إدارة البوتات</h3>
+            <div>
+                <button class="btn btn-primary btn-sm" onclick="refreshBots()">تحديث</button>
+            </div>
+        </div>
+        
+        <!-- تبويبات -->
+        <div style="display: flex; border-bottom: 1px solid #eee; padding: 0 20px;">
+            <button class="tab-btn active" data-tab="whatsapp" onclick="switchTab('whatsapp')">بوتات واتساب</button>
+            <button class="tab-btn" data-tab="telegram" onclick="switchTab('telegram')">بوتات تيليجرام</button>
+        </div>
+        
+        <!-- بوتات واتساب -->
+        <div id="whatsappTab" class="tab-content" style="padding: 20px;">
+            <div style="overflow-x: auto;">
+                <table class="table">
+                    <thead>
+                        <tr><th>#</th><th>اسم البوت</th><th>المالك</th><th>الجلسات</th><th>الحالة</th><th>تاريخ الإنشاء</th><th>الإجراءات</th></tr>
+                    </thead>
+                    <tbody>
+                        <% if (whatsappBots && whatsappBots.length > 0) { %>
+                            <% whatsappBots.forEach(bot => { %>
+                                <tr>
+                                    <td><%= bot.bot_id %></td>
+                                    <td><%= bot.bot_name %></td>
+                                    <td><%= bot.user?.email || '-' %></td>
+                                    <td><%= bot.sessions?.length || 0 %></td>
+                                    <td><span class="badge <%= bot.status === 'active' ? 'badge-success' : 'badge-warning' %>"><%= bot.status === 'active' ? 'نشط' : (bot.status === 'paused' ? 'موقوف' : 'معلق') %></span></td>
+                                    <td><%= new Date(bot.created_at).toLocaleDateString('ar') %></td>
+                                    <td>
+                                        <button class="btn btn-info btn-sm" onclick="viewBot(<%= bot.bot_id %>, 'whatsapp')">عرض</button>
+                                        <button class="btn btn-warning btn-sm" onclick="toggleBot(<%= bot.bot_id %>, 'whatsapp', '<%= bot.status %>')"><%= bot.status === 'active' ? 'إيقاف' : 'تشغيل' %></button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteBot(<%= bot.bot_id %>, 'whatsapp')">حذف</button>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr><td colspan="7" style="text-align: center;">لا توجد بوتات واتساب</td></tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- بوتات تيليجرام -->
+        <div id="telegramTab" class="tab-content" style="display: none; padding: 20px;">
+            <div style="overflow-x: auto;">
+                <table class="table">
+                    <thead>
+                        <tr><th>#</th><th>اسم البوت</th><th>المالك</th><th>المستخدم</th><th>المشتركون</th><th>الحالة</th><th>تاريخ الإنشاء</th><th>الإجراءات</th></tr>
+                    </thead>
+                    <tbody>
+                        <% if (telegramBots && telegramBots.length > 0) { %>
+                            <% telegramBots.forEach(bot => { %>
+                                <tr>
+                                    <td><%= bot.bot_id %></td>
+                                    <td><%= bot.bot_name %></td>
+                                    <td><%= bot.user?.email || '-' %></td>
+                                    <td>@<%= bot.bot_username %></td>
+                                    <td><%= bot.subscribers?.length || 0 %></td>
+                                    <td><span class="badge <%= bot.status === 'active' ? 'badge-success' : 'badge-warning' %>"><%= bot.status === 'active' ? 'نشط' : (bot.status === 'paused' ? 'موقوف' : 'معلق') %></span></td>
+                                    <td><%= new Date(bot.created_at).toLocaleDateString('ar') %></td>
+                                    <td>
+                                        <button class="btn btn-info btn-sm" onclick="viewBot(<%= bot.bot_id %>, 'telegram')">عرض</button>
+                                        <button class="btn btn-warning btn-sm" onclick="toggleBot(<%= bot.bot_id %>, 'telegram', '<%= bot.status %>')"><%= bot.status === 'active' ? 'إيقاف' : 'تشغيل' %></button>
+                                        <button class="btn btn-danger btn-sm" onclick="deleteBot(<%= bot.bot_id %>, 'telegram')">حذف</button>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        <% } else { %>
+                            <tr><td colspan="8" style="text-align: center;">لا توجد بوتات تيليجرام</td></tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .tab-btn { padding: 10px 20px; background: none; border: none; cursor: pointer; font-size: 1rem; }
+    .tab-btn.active { border-bottom: 2px solid #007bff; color: #007bff; }
+</style>
+
+<script>
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+        document.getElementById(`${tab}Tab`).style.display = 'block';
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`.tab-btn[data-tab="${tab}"]`).classList.add('active');
+    }
+    
+    async function viewBot(botId, type) {
+        const bot = await apiFetch(`/api/admin/bots/${type}/${botId}`);
+        alert(`اسم البوت: ${bot.bot_name}\nالمالك: ${bot.user_email}\nالحالة: ${bot.status}\nتاريخ الإنشاء: ${new Date(bot.created_at).toLocaleDateString('ar')}`);
+    }
+    
+    async function toggleBot(botId, type, currentStatus) {
+        const action = currentStatus === 'active' ? 'pause' : 'resume';
+        if (confirm(`هل أنت متأكد من ${action === 'pause' ? 'إيقاف' : 'تشغيل'} هذا البوت؟`)) {
+            await apiFetch(`/api/admin/bots/${type}/${botId}/toggle`, {
+                method: 'POST',
+                body: JSON.stringify({ action })
+            });
+            location.reload();
+        }
+    }
+    
+    async function deleteBot(botId, type) {
+        if (confirm('هل أنت متأكد من حذف هذا البوت؟')) {
+            await apiFetch(`/api/admin/bots/${type}/${botId}`, { method: 'DELETE' });
+            location.reload();
+        }
+    }
+    
+    async function refreshBots() {
+        location.reload();
+    }
+</script>

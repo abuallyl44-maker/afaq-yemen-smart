@@ -1,0 +1,49 @@
+<!-- القسم المشترك: الرأس (Header) -->
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <a href="/">
+                    <img src="/public/images/logo.svg" alt="آفاق اليمن" height="40">
+                    <h1>آفاق اليمن</h1>
+                </a>
+            </div>
+            <nav class="nav-links">
+                <a href="/" class="<%= currentPage === 'home' ? 'active' : '' %>">الرئيسية</a>
+                <a href="/services" class="<%= currentPage === 'services' ? 'active' : '' %>">خدماتنا</a>
+                <a href="/pricing" class="<%= currentPage === 'pricing' ? 'active' : '' %>">الأسعار</a>
+                <a href="/help-center" class="<%= currentPage === 'help' ? 'active' : '' %>">مركز المساعدة</a>
+                <a href="/blog" class="<%= currentPage === 'blog' ? 'active' : '' %>">المدونة</a>
+                <a href="/contact" class="<%= currentPage === 'contact' ? 'active' : '' %>">اتصل بنا</a>
+                <% if (user) { %>
+                    <% if (user.role === 'admin' || user.role === 'support' || user.role === 'content_editor') { %>
+                        <a href="/admin" class="<%= currentPage === 'admin' ? 'active' : '' %>">لوحة التحكم</a>
+                    <% } %>
+                    <a href="/profile">حسابي</a>
+                    <a href="/logout">تسجيل الخروج</a>
+                <% } else { %>
+                    <a href="/login">دخول</a>
+                    <a href="/register" class="btn btn-sm">إنشاء حساب</a>
+                <% } %>
+            </nav>
+            <button class="mobile-menu-toggle" aria-label="القائمة">☰</button>
+        </div>
+    </div>
+</header>
+
+<style>
+    .logo a { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .mobile-menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+    
+    @media (max-width: 768px) {
+        .nav-links { display: none; position: absolute; top: 70px; right: 0; left: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 5px 10px rgba(0,0,0,0.1); }
+        .nav-links.show { display: flex; }
+        .mobile-menu-toggle { display: block; }
+    }
+</style>
+
+<script>
+    document.querySelector('.mobile-menu-toggle')?.addEventListener('click', function() {
+        document.querySelector('.nav-links').classList.toggle('show');
+    });
+</script>

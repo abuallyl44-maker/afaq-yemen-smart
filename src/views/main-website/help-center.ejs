@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مركز المساعدة - آفاق اليمن</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; }
+        
+        .header { background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .header-content { max-width: 1200px; margin: 0 auto; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .logo h1 { font-size: 1.5rem; color: #007bff; }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: 500; }
+        .nav-links a:hover, .nav-links a.active { color: #007bff; }
+        
+        .hero { background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); color: white; padding: 60px 20px; text-align: center; }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 20px; }
+        .search-box { max-width: 500px; margin: 30px auto 0; }
+        .search-box input { width: 100%; padding: 15px; border: none; border-radius: 50px; font-size: 1rem; }
+        
+        .help-section { padding: 60px 20px; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; font-size: 2rem; margin-bottom: 50px; position: relative; }
+        .section-title::after { content: ''; display: block; width: 60px; height: 3px; background: #007bff; margin: 15px auto 0; }
+        
+        .faq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; }
+        .faq-category { background: #f8f9fa; border-radius: 10px; padding: 20px; }
+        .faq-category h3 { color: #007bff; margin-bottom: 15px; }
+        .faq-item { margin-bottom: 15px; border-bottom: 1px solid #ddd; }
+        .faq-question { font-weight: bold; padding: 10px; cursor: pointer; display: flex; justify-content: space-between; }
+        .faq-question:hover { color: #007bff; }
+        .faq-answer { padding: 0 10px 10px; display: none; color: #666; }
+        .faq-answer.show { display: block; }
+        
+        .videos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px; }
+        .video-card { background: #f8f9fa; border-radius: 10px; overflow: hidden; text-align: center; }
+        .video-thumbnail { background: #007bff; height: 180px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem; }
+        .video-card h3 { padding: 15px; }
+        .video-card .btn { display: inline-block; margin-bottom: 20px; padding: 8px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 20px; }
+        
+        .contact-support { background: linear-gradient(135deg, #007bff 0%, #0056b3 100%); color: white; text-align: center; padding: 60px 20px; margin-top: 60px; border-radius: 20px; }
+        .contact-support .btn { background: white; color: #007bff; }
+        
+        .footer { background: #1a2a3a; color: white; padding: 40px 20px 20px; text-align: center; }
+        .footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; }
+        .footer-links a { color: white; text-decoration: none; }
+        
+        @media (max-width: 768px) {
+            .header-content { flex-direction: column; gap: 15px; }
+            .hero h1 { font-size: 1.8rem; }
+            .faq-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo"><h1>آفاق اليمن</h1></div>
+            <nav class="nav-links">
+                <a href="/">الرئيسية</a>
+                <a href="/services">خدماتنا</a>
+                <a href="/pricing">الأسعار</a>
+                <a href="/help-center" class="active">مركز المساعدة</a>
+                <a href="/contact">اتصل بنا</a>
+                <% if (user) { %>
+                    <a href="/admin">لوحة التحكم</a>
+                    <a href="/logout">تسجيل الخروج</a>
+                <% } else { %>
+                    <a href="/login">دخول</a>
+                <% } %>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>مركز المساعدة</h1>
+        <p>كل ما تحتاج معرفته لاستخدام منصة آفاق اليمن</p>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="ابحث عن سؤال..." onkeyup="searchFAQ()">
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2 class="section-title">الأسئلة الشائعة</h2>
+        <div class="faq-grid">
+            <div class="faq-category">
+                <h3>📌 البداية والتسجيل</h3>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">كيف يمكنني إنشاء حساب جديد؟</div>
+                    <div class="faq-answer">يمكنك إنشاء حساب جديد عن طريق فتح البوت الرئيسي على تيليجرام واتباع التعليمات.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">ماذا أفعل إذا نسيت كلمة السر؟</div>
+                    <div class="faq-answer">يمكنك استخدام خاصية "نسيت كلمة السر" في البوت، وسيتم إرسال كود التحقق إلى بريدك.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">كيف يمكنني تغيير بيانات المؤسسة؟</div>
+                    <div class="faq-answer">من القائمة الرئيسية → إعدادات الحساب → يمكنك تعديل جميع بيانات مؤسستك.</div>
+                </div>
+            </div>
+            <div class="faq-category">
+                <h3>🤖 البوتات</h3>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">كيف يمكنني إنشاء بوت واتساب؟</div>
+                    <div class="faq-answer">من القائمة الرئيسية → إنشاء بوت واتساب → أدخل اسم البوت → امسح QR Code من هاتفك.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">كم عدد البوتات التي يمكنني إنشاؤها؟</div>
+                    <div class="faq-answer">يختلف حسب الخطة: المجانية بوت واحد، الأساسية 5 بوتات، الاحترافية غير محدودة.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">ماذا أفعل إذا انتهت صلاحية جلسة واتساب؟</div>
+                    <div class="faq-answer">ستتلقى إشعاراً، ويمكنك إعادة ربط الجلسة من قائمة إعدادات البوت.</div>
+                </div>
+            </div>
+            <div class="faq-category">
+                <h3>💰 الاشتراكات والدفع</h3>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">كيف يمكنني الاشتراك في خطة مدفوعة؟</div>
+                    <div class="faq-answer">من القائمة الرئيسية → الاشتراك والدفع → اختر الخطة → اتبع تعليمات الدفع.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">ما هي طرق الدفع المتاحة؟</div>
+                    <div class="faq-answer">الدفع عبر الحوالات المالية: حزمي، السريع، يمن إكسبرس.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">كم تستغرق عملية تأكيد الدفع؟</div>
+                    <div class="faq-answer">تستغرق حتى 48 ساعة، وسيتم إشعارك عند التأكيد.</div>
+                </div>
+            </div>
+            <div class="faq-category">
+                <h3>📋 الكتالوج</h3>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">كيف يمكنني إضافة خدمة جديدة؟</div>
+                    <div class="faq-answer">من القائمة الرئيسية → كتالوج المؤسسة → الخدمات → إضافة خدمة جديدة.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">هل يمكنني إضافة صور للمنتجات؟</div>
+                    <div class="faq-answer">نعم، يمكنك رفع صور للمنتجات والخدمات عند إضافتها.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">كيف تنعكس التغييرات على البوتات والموقع؟</div>
+                    <div class="faq-answer">جميع التغييرات تنعكس تلقائياً وفورياً على جميع القنوات.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2 class="section-title">فيديوهات تعليمية</h2>
+        <div class="videos-grid">
+            <div class="video-card">
+                <div class="video-thumbnail">🎬</div>
+                <h3>كيفية إنشاء بوت واتساب</h3>
+                <a href="#" class="btn">مشاهدة الفيديو</a>
+            </div>
+            <div class="video-card">
+                <div class="video-thumbnail">🎬</div>
+                <h3>كيفية تخصيص الكتالوج</h3>
+                <a href="#" class="btn">مشاهدة الفيديو</a>
+            </div>
+            <div class="video-card">
+                <div class="video-thumbnail">🎬</div>
+                <h3>كيفية إنشاء موقع إلكتروني</h3>
+                <a href="#" class="btn">مشاهدة الفيديو</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="help-section">
+        <div class="contact-support">
+            <h2>لم تجد ما تبحث عنه؟</h2>
+            <p>فريق الدعم جاهز لمساعدتك على مدار الساعة</p>
+            <br>
+            <a href="/contact" class="btn">تواصل معنا</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-links">
+            <a href="/privacy">سياسة الخصوصية</a>
+            <a href="/terms">شروط الاستخدام</a>
+            <a href="/contact">اتصل بنا</a>
+        </div>
+        <p>&copy; 2024 آفاق اليمن. جميع الحقوق محفوظة</p>
+    </footer>
+
+    <script>
+        function toggleFAQ(element) {
+            const answer = element.nextElementSibling;
+            answer.classList.toggle('show');
+        }
+        
+        function searchFAQ() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question').textContent.toLowerCase();
+                if (question.includes(searchTerm)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

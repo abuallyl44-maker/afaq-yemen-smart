@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= company.company_name || 'موقع المؤسسة' %></title>
+    <style>
+        :root {
+            --primary-color: <%= website.primary_color || '#007bff' %>;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: #fff;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        .header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo img {
+            max-height: 60px;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #0056b3 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .hero .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: white;
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: transform 0.3s;
+        }
+        
+        .hero .btn:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Sections */
+        .section {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: var(--dark-color);
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-color);
+            margin: 15px auto 0;
+        }
+        
+        /* Services Grid */
+        .services-grid, .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card, .product-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .service-card:hover, .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .service-card img, .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .service-card h3, .product-card h3 {
+            padding: 20px 20px 10px;
+            color: var(--dark-color);
+        }
+        
+        .service-card p, .product-card p {
+            padding: 0 20px;
+            color: var(--secondary-color);
+        }
+        
+        .service-card .price, .product-card .price {
+            padding: 15px 20px;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        /* Offers Section */
+        .offers-section {
+            background-color: var(--light-color);
+        }
+        
+        .offers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .offer-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .offer-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .offer-content {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .offer-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .offer-badge {
+            display: inline-block;
+            background-color: var(--danger-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        /* About Section */
+        .about-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        /* Contact Section */
+        .contact-section {
+            background-color: var(--light-color);
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .contact-form input,
+        .contact-form textarea,
+        .contact-form select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+        
+        .contact-form button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .contact-info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 40px 0 20px;
+            text-align: center;
+        }
+        
+        .footer a {
+            color: white;
+            text-decoration: none;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+        
+        /* WhatsApp Float Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: transform 0.3s;
+            z-index: 1000;
+        }
+        
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 15px;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section {
+                padding: 40px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <% if (company.company_logo) { %>
+                        <img src="<%= company.company_logo %>" alt="<%= company.company_name %>">
+                    <% } %>
+                    <h1><%= company.company_name || 'مؤسستك' %></h1>
+                </div>
+                <nav class="nav-links">
+                    <a href="#">الرئيسية</a>
+                    <a href="#services">خدماتنا</a>
+                    <% if (products.length > 0) { %>
+                        <a href="#products">منتجاتنا</a>
+                    <% } %>
+                    <% if (offers.length > 0) { %>
+                        <a href="#offers">العروض</a>
+                    <% } %>
+                    <a href="#about">من نحن</a>
+                    <a href="#contact">اتصل بنا</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>مرحباً بكم في <%= company.company_name || 'مؤسستنا' %></h1>
+            <p>نقدم لكم أفضل الخدمات والحلول المتكاملة لتلبية احتياجاتكم</p>
+            <a href="#contact" class="btn">تواصل معنا</a>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <% if (services.length > 0) { %>
+    <section id="services" class="section">
+        <div class="container">
+            <h2 class="section-title">خدماتنا</h2>
+            <div class="services-grid">
+                <% services.forEach(service => { %>
+                    <div class="service-card">
+                        <% if (service.image) { %>
+                            <img src="<%= service.image %>" alt="<%= service.name %>">
+                        <% } %>
+                        <h3><%= service.name %></h3>
+                        <p><%= service.description ? service.description.substring(0, 100) : '' %></p>
+                        <% if (service.price) { %>
+                            <div class="price"><%= service.price %> ريال</div>
+                        <% } %>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </section>
+    <% } %>
+
+    <!-- Products Section -->
+    <% if (products.length > 0) { %>
+    <section id="products" class="section" style="background-color: var(--light-color);">
+        <div class="container">
+            <h2 class="section-title">منتجاتنا</h2>
+            <div class="products-grid">
+                <% products.forEach(product => { %>
+                    <div class="product-card">
+                        <% if (product.image) { %>
+                            <img src="<%= product.image %>" alt="<%= product.name %>">
+                        <% } %>
+                        <h3><%= product.name %></h3>
+                        <p><%= product.description ? product.description.substring(0, 100) : '' %></p>
+                        <% if (product.price) { %>
+                            <div class="price"><%= product.price %> ريال</div>
+                        <% } %>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </section>
+    <% } %>
+
+    <!-- Offers Section -->
+    <% if (offers.length > 0) { %>
+    <section id="offers" class="section offers-section">
+        <div class="container">
+            <h2 class="section-title">عروض حصرية</h2>
+            <div class="offers-grid">
+                <% offers.forEach(offer => { %>
+                    <div class="offer-card">
+                        <% if (offer.image) { %>
+                            <img src="<%= offer.image %>" alt="<%= offer.name %>">
+                        <% } %>
+                        <div class="offer-content">
+                            <div class="offer-badge">خصم <%= offer.discount %>%</div>
+                            <h3><%= offer.name %></h3>
+                            <p><%= offer.description ? offer.description.substring(0, 150) : '' %></p>
+                            <% if (offer.end_date) { %>
+                                <small>ينتهي العرض: <%= new Date(offer.end_date).toLocaleDateString('ar') %></small>
+                            <% } %>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </section>
+    <% } %>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2 class="section-title">من نحن</h2>
+            <div class="about-content">
+                <p><%= company.company_description || 'نحن مؤسسة رائدة في مجال تقديم الخدمات الرقمية، نسعى دائماً لتقديم الأفضل لعملائنا.' %></p>
+                <br>
+                <p>نؤمن بأن الجودة والابتكار هما مفتاح النجاح في عالم الأعمال الحديث.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact-section">
+        <div class="container">
+            <h2 class="section-title">تواصل معنا</h2>
+            <div class="contact-grid">
+                <div class="contact-form">
+                    <h3>أرسل لنا رسالة</h3>
+                    <form id="contactForm">
+                        <input type="text" name="name" placeholder="الاسم الكامل" required>
+                        <input type="email" name="email" placeholder="البريد الإلكتروني" required>
+                        <input type="tel" name="phone" placeholder="رقم الهاتف">
+                        <select name="inquiry_type">
+                            <option value="general">استفسار عام</option>
+                            <option value="service">استفسار عن خدمة</option>
+                            <option value="complaint">شكوى</option>
+                            <option value="suggestion">اقتراح</option>
+                        </select>
+                        <textarea name="message" rows="5" placeholder="رسالتك" required></textarea>
+                        <button type="submit">إرسال</button>
+                    </form>
+                </div>
+                <div class="contact-info">
+                    <h3>معلومات الاتصال</h3>
+                    <div class="contact-info-item">
+                        <span>📧</span>
+                        <span><%= company.email || 'info@example.com' %></span>
+                    </div>
+                    <% if (company.phone) { %>
+                    <div class="contact-info-item">
+                        <span>📱</span>
+                        <span><%= company.phone %></span>
+                    </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-links">
+                <a href="#">الرئيسية</a>
+                <a href="#services">خدماتنا</a>
+                <% if (products.length > 0) { %>
+                    <a href="#products">منتجاتنا</a>
+                <% } %>
+                <a href="#about">من نحن</a>
+                <a href="#contact">اتصل بنا</a>
+            </div>
+            <p>&copy; <%= year %> <%= company.company_name || 'المؤسسة' %>. جميع الحقوق محفوظة</p>
+            <p style="margin-top: 10px; font-size: 12px;">تعمل بواسطة <a href="<%= app_url %>" target="_blank">آفاق اليمن</a></p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/<%= company.phone ? company.phone.replace(/[^0-9]/g, '') : '' %>" class="whatsapp-float" target="_blank">
+        💬
+    </a>
+
+    <script>
+        // معالج نموذج الاتصال
+        document.getElementById('contactForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            try {
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    alert('تم إرسال رسالتك بنجاح. سنتواصل معك قريباً.');
+                    e.target.reset();
+                } else {
+                    alert('حدث خطأ، يرجى المحاولة مرة أخرى.');
+                }
+            } catch (error) {
+                alert('حدث خطأ، يرجى المحاولة مرة أخرى.');
+            }
+        });
+    </script>
+</body>
+</html>

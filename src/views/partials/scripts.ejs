@@ -1,0 +1,78 @@
+<!-- القسم المشترك: السكريبتات العامة -->
+<script src="/public/js/main.js"></script>
+<script src="/public/js/api.js"></script>
+
+<script>
+    // إعدادات عامة
+    const APP_CONFIG = {
+        name: 'آفاق اليمن',
+        version: '1.0.0',
+        apiUrl: '/api',
+        isAuthenticated: <%= !!user %>,
+        userRole: '<%= user?.role || 'guest' %>'
+    };
+    
+    // دالة مساعدة للحصول على التوكن
+    function getAuthToken() {
+        return localStorage.getItem('token');
+    }
+    
+    // دالة مساعدة لإضافة التوكن للطلبات
+    function authFetch(url, options = {}) {
+        const token = getAuthToken();
+        if (token) {
+            options.headers = {
+                ...options.headers,
+                'Authorization': `Bearer ${token}`
+            };
+        }
+        return fetch(url, options);
+    }
+    
+    // دالة مساعدة للطلبات API
+    async function apiFetch(url, options = {}) {
+        const response = await authFetch(url, {
+            headers: { 'Content-Type': 'application/json' },
+            ...options
+        });
+        
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'حدث خطأ');
+        }
+        
+        return response.json();
+    }
+    
+    // دالة مساعدة للتحقق من تسجيل الدخول
+    function requireAuth() {
+        if (!getAuthToken()) {
+            window.location.href = '/login';
+            return false;
+        }
+        return true;
+    }
+    
+    // دالة مساعدة للتحقق من صلاحيات المشرف
+    function requireAdmin() {
+        if (APP_CONFIG.userRole !== 'admin') {
+            window.location.href = '/';
+            return false;
+        }
+        return true;
+    }
+    
+    // دالة مساعدة لتنسيق التاريخ
+    function formatDate(date, format = 'short') {
+        const d = new Date(date);
+        if (format === 'short') {
+            return d.toLocaleDateString('ar');
+        }
+        return d.toLocaleString('ar');
+    }
+    
+    // دالة مساعدة لتنسيق المبلغ
+    function formatMoney(amount) {
+        return new Intl.NumberFormat('ar').format(amount) + ' ريال';
+    }
+</script>

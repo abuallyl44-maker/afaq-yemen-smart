@@ -1,0 +1,64 @@
+<!-- القسم المشترك: التذييل (Footer) -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-links">
+            <div class="footer-section">
+                <h4>آفاق اليمن</h4>
+                <ul>
+                    <li><a href="/">الرئيسية</a></li>
+                    <li><a href="/services">خدماتنا</a></li>
+                    <li><a href="/pricing">الأسعار</a></li>
+                    <li><a href="/about">من نحن</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>الدعم</h4>
+                <ul>
+                    <li><a href="/help-center">مركز المساعدة</a></li>
+                    <li><a href="/faq">الأسئلة الشائعة</a></li>
+                    <li><a href="/contact">اتصل بنا</a></li>
+                    <li><a href="/privacy">سياسة الخصوصية</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>تابعنا</h4>
+                <ul>
+                    <li><a href="#" target="_blank">فيسبوك</a></li>
+                    <li><a href="#" target="_blank">تويتر</a></li>
+                    <li><a href="#" target="_blank">انستغرام</a></li>
+                    <li><a href="#" target="_blank">لينكد إن</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>معلومات الاتصال</h4>
+                <ul>
+                    <li>📧 <a href="mailto:info@afaqyemen.com">info@afaqyemen.com</a></li>
+                    <li>📱 <a href="tel:+967777777777">+967 777 777 777</a></li>
+                    <li>💬 <a href="https://wa.me/967777777777">واتساب</a></li>
+                    <li>🤖 <a href="https://t.me/AfaqYemenBot">تيليجرام</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <%= new Date().getFullYear() %> آفاق اليمن. جميع الحقوق محفوظة</p>
+            <p style="font-size: 0.8rem;">تعمل بواسطة <a href="/">آفاق اليمن</a></p>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .footer { background: #1a2a3a; color: white; padding: 60px 0 30px; margin-top: 60px; }
+    .footer-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 40px; }
+    .footer-section h4 { margin-bottom: 15px; color: #007bff; }
+    .footer-section ul { list-style: none; }
+    .footer-section li { margin-bottom: 8px; }
+    .footer-section a { color: #aaa; text-decoration: none; transition: color 0.3s; }
+    .footer-section a:hover { color: white; }
+    .footer-bottom { text-align: center; padding-top: 20px; border-top: 1px solid #333; }
+    .footer-bottom a { color: #007bff; text-decoration: none; }
+    
+    @media (max-width: 768px) {
+        .footer-links { grid-template-columns: 1fr; text-align: center; }
+        .footer-section ul { padding: 0; }
+    }
+</style>
